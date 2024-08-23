@@ -1,15 +1,15 @@
 {
-  "name": "Github Page PWA",
-  "short_name": "GPPWA",
-  "description": "Github Page as a Progressive Web App",
-  "scope": "/github-page-pwa/",
-  "start_url": "/github-page-pwa/",
+  "name": "Weekly Shop",
+  "short_name": "WKLSHP",
+  "description": "A simple PWA for weekly shopping",
+  "scope": "/shopping-pwa/",
+  "start_url": "/shopping-pwa/",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "display": "standalone", 
   "icons": [
       {
-        "src": "/github-page-pwa/img/icon.png",
+        "src": "/shopping-pwa/img/icon.png",
         "type": "image/png",
         "sizes": "700x700"
       }
