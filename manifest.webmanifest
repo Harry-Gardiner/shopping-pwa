@@ -1,12 +1,13 @@
 {
   "name": "Weekly Shop",
-  "short_name": "WKLSHP",
+  "short_name": "Weekly Shop",
   "description": "A simple PWA for weekly shopping",
   "scope": "/shopping-pwa/",
   "start_url": "/shopping-pwa/",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "display": "standalone", 
+  "prefer_related_applications": false,
   "icons": [
       {
         "src": "/shopping-pwa/img/icon.png",
