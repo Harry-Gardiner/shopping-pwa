@@ -9,9 +9,43 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
- 
-  <h1>Hello world</h1>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam cum labore voluptate provident? Velit!</p>
+  <div class="container">
+    <header>
+      <img src="images/note.png" alt="" />
+      <h1>Shopping List</h1>
+    </header>
+    <form id="item-form">
+      <div class="form-control">
+        <input
+          type="text"
+          class="form-input"
+          id="item-input"
+          name="item"
+          placeholder="Enter Item"
+        />
+      </div>
+      <div class="form-control">
+        <button type="submit" class="btn">
+          <i class="fa-solid fa-plus"></i> Add Item
+        </button>
+      </div>
+    </form>
+
+    <div class="filter">
+      <input
+        type="text"
+        class="form-input-filter"
+        id="filter"
+        placeholder="Filter Items"
+      />
+    </div>
+
+    <ul id="item-list" class="items">
+     
+    </ul>
+
+    <button id="clear" class="btn-clear">Clear All</button>
+  </div>
 
   <script>
       if (navigator.serviceWorker) {
@@ -22,5 +56,6 @@
       }
   </script>
   <script src="js/app.js"></script>
+  <script src="https://kit.fontawesome.com/352df53542.js" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 @import url('reset.css');
 @import url('variables.css');
+@import url('buttons.css');
 
 body {
     font-family: 'Roboto', sans-serif;
@@ -36,27 +37,12 @@ h4 {
 
 p, li, input, button {
     font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.5;
 }
 
 small {
     font-size: 14px;
-}
-
-button {
-    font-size: 16px;
-    padding: 10px 20px;
-    color: var(--background-color);
-    background-color: var(--primary-color);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: var(--button-hover-color);
 }
 
 /* Input Fields */
@@ -77,7 +63,7 @@ input[type="text"]::placeholder, input[type="email"]::placeholder, input[type="p
 
 /* Containers */
 .container {
-    padding: 20px;
+    padding: calc(15px + 1.5625vw);
     margin: 0 auto;
     max-width: 1200px;
 }
@@ -97,23 +83,6 @@ ul, ol {
 
 ul li, ol li {
     margin-bottom: 10px;
-}
-
-/* Button Shape and Shadow */
-.button-rounded {
-    border-radius: 8px;
-    padding: 12px 24px;
-    background-color: var(--primary-color);
-    color: var(--background-color);
-    border: none;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.button-rounded:hover {
-    background-color: var(--button-hover-color);
-    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* General Spacing */
