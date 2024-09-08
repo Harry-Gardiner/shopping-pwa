@@ -6,7 +6,3 @@
     --background-color: #FFF2D7;
     --button-hover-color: #E87455;
 }
-
-.container {
-    padding: calc(8px + 1.5625vw)
-}

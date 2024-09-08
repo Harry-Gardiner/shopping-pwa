@@ -37,7 +37,7 @@ h4 {
 
 p, li, input, button {
     font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.5;
 }
 
@@ -63,7 +63,7 @@ input[type="text"]::placeholder, input[type="email"]::placeholder, input[type="p
 
 /* Containers */
 .container {
-    padding: 20px;
+    padding: calc(15px + 1.5625vw);
     margin: 0 auto;
     max-width: 1200px;
 }
