@@ -16,12 +16,6 @@ button {
     justify-content: center;
     align-items: center;
   }
-
-  &.btn-clear {
-    position: absolute;
-    left: 1rem;
-    bottom: 1rem;
-  }
 }
 
 button:hover {
@@ -43,4 +37,14 @@ button:hover {
 .button-rounded:hover {
   background-color: var(--button-hover-color);
   box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.macro-buttons {
+    position: absolute;
+    left: 1rem;
+    bottom: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
