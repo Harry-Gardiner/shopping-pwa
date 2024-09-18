@@ -1,7 +1,8 @@
 const itemForm = document.getElementById('item-form');
 const itemInput = document.getElementById('item-input');
 const itemList = document.getElementById('item-list');
-const gotList = document.getElementById('got-list'); // Reference to the second ul
+const gotList = document.getElementById('got-list');
+const resetBtn = document.getElementById('reset');
 const clearBtn = document.getElementById('clear');
 const formBtn = itemForm.querySelector('button');
 let isEditMode = false;
@@ -157,11 +158,20 @@ function checkUI() {
   isEditMode = false;
 }
 
+function resetList() {
+  const items = gotList.querySelectorAll('li');
+  items.forEach((item) => {
+    itemList.appendChild(item);
+    updateItemInStorage(item.textContent, 'item-list');
+  });
+}
+
 function init() {
   itemForm.addEventListener('submit', onAddItemSubmit);
   itemList.addEventListener('click', onClickItem);
-  gotList.addEventListener('click', onClickItem); // Add event listener for gotList
+  gotList.addEventListener('click', onClickItem);
   clearBtn.addEventListener('click', clearItems);
+  resetBtn.addEventListener('click', resetList);
   document.addEventListener('DOMContentLoaded', displayItems);
   checkUI();
 }
