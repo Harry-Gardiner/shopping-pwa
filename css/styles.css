@@ -79,6 +79,12 @@ input[type="text"]::placeholder, input[type="email"]::placeholder, input[type="p
 /* Lists */
 ul, ol {
     padding-left: 0;
+
+    &.got-items {
+        li {
+            opacity: 0.5;
+        }
+    }
 }
 
 ul li, ol li {

@@ -8,7 +8,7 @@ let isEditMode = false;
 
 function displayItems() {
   const itemsFromStorage = getItemsFromStorage();
-  itemsFromStorage.forEach((item) => addItemToDOM(item));
+  itemsFromStorage.forEach((item) => addItemToDOM(item.name, item.list));
   checkUI();
 }
 
@@ -36,19 +36,20 @@ function onAddItemSubmit(e) {
     }
   }
 
-  addItemToDOM(newItem);
-  addItemToStorage(newItem);
+  addItemToDOM(newItem, 'item-list');
+  addItemToStorage(newItem, 'item-list');
   checkUI();
   itemInput.value = '';
 }
 
-function addItemToDOM(item, list = itemList) {
+function addItemToDOM(item, listId) {
   const li = document.createElement('li');
   li.appendChild(document.createTextNode(item));
 
   const button = createButton('remove-item btn-link text-red');
   li.appendChild(button);
 
+  const list = listId === 'item-list' ? itemList : gotList;
   list.appendChild(li);
 }
 
@@ -66,9 +67,9 @@ function createIcon(classes) {
   return icon;
 }
 
-function addItemToStorage(item) {
+function addItemToStorage(item, listId) {
   const itemsFromStorage = getItemsFromStorage();
-  itemsFromStorage.push(item);
+  itemsFromStorage.push({ name: item, list: listId });
   localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
@@ -97,32 +98,48 @@ function onClickItem(e) {
 
 function setItemToGot(item) {
   gotList.appendChild(item);
+  updateItemInStorage(item.textContent, 'got-list');
 }
 
 function setItemToNotGot(item) {
   itemList.appendChild(item);
+  updateItemInStorage(item.textContent, 'item-list');
+}
+
+function updateItemInStorage(itemName, listId) {
+  let itemsFromStorage = getItemsFromStorage();
+  itemsFromStorage = itemsFromStorage.map((item) => {
+    if (item.name === itemName) {
+      return { name: itemName, list: listId };
+    }
+    return item;
+  });
+  localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
 function checkIfItemExists(item) {
   const itemsFromStorage = getItemsFromStorage();
-  return itemsFromStorage.includes(item);
+  return itemsFromStorage.some((i) => i.name === item);
 }
 
 function removeItem(item) {
-    item.remove();
-    removeItemFromStorage(item.textContent);
-    checkUI();
+  item.remove();
+  removeItemFromStorage(item.textContent);
+  checkUI();
 }
 
-function removeItemFromStorage(item) {
+function removeItemFromStorage(itemName) {
   let itemsFromStorage = getItemsFromStorage();
-  itemsFromStorage = itemsFromStorage.filter((i) => i !== item);
+  itemsFromStorage = itemsFromStorage.filter((i) => i.name !== itemName);
   localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
 function clearItems() {
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
+  }
+  while (gotList.firstChild) {
+    gotList.removeChild(gotList.firstChild);
   }
   localStorage.removeItem('items');
   checkUI();
