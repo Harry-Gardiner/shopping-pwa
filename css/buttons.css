@@ -1,35 +1,46 @@
 button {
-    font-size: 16px;
-    padding: 10px 20px;
-    color: var(--background-color);
-    background-color: var(--primary-color);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  font-size: 16px;
+  padding: 10px 20px;
+  color: var(--background-color);
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 
-    &.remove-item {
-        margin-left: 1rem;
-    }
+  &.remove-item {
+    padding: 0.5rem 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 button:hover {
-    background-color: var(--button-hover-color);
+  background-color: var(--button-hover-color);
 }
 
 /* Button Shape and Shadow */
 .button-rounded {
-    border-radius: 8px;
-    padding: 12px 24px;
-    background-color: var(--primary-color);
-    color: var(--background-color);
-    border: none;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+  padding: 12px 24px;
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  border: none;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .button-rounded:hover {
-    background-color: var(--button-hover-color);
-    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+  background-color: var(--button-hover-color);
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.macro-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
