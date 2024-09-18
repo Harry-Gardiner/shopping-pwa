@@ -136,14 +136,16 @@ function removeItemFromStorage(itemName) {
 }
 
 function clearItems() {
-  while (itemList.firstChild) {
-    itemList.removeChild(itemList.firstChild);
+   if (confirm('Are you sure you want to clear all items?')) {
+    while (itemList.firstChild) {
+      itemList.removeChild(itemList.firstChild);
+    }
+    while (gotList.firstChild) {
+      gotList.removeChild(gotList.firstChild);
+    }
+    localStorage.removeItem('items');
+    checkUI();
   }
-  while (gotList.firstChild) {
-    gotList.removeChild(gotList.firstChild);
-  }
-  localStorage.removeItem('items');
-  checkUI();
 }
 
 function checkUI() {
@@ -159,11 +161,13 @@ function checkUI() {
 }
 
 function resetList() {
-  const items = gotList.querySelectorAll('li');
-  items.forEach((item) => {
-    itemList.appendChild(item);
-    updateItemInStorage(item.textContent, 'item-list');
-  });
+  if(confirm('Are you sure you want to reset the list?')) {
+    const items = gotList.querySelectorAll('li');
+    items.forEach((item) => {
+      itemList.appendChild(item);
+      updateItemInStorage(item.textContent, 'item-list');
+    });
+  }
 }
 
 function init() {
