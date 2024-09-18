@@ -8,9 +8,8 @@ body {
     background-color: var(--background-color);
     margin: 0;
     padding: 0;
-    height: 100dvh;
-    background: url(../img/icon.png) 95% 95% no-repeat;
-    background-size: 20vh;
+    min-height: 100dvh;
+    padding-bottom: 20vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -43,6 +42,13 @@ p, li, input, button {
 
 small {
     font-size: 14px;
+}
+
+.logo {
+    height: 20vh;
+    position: fixed;
+    bottom: 2rem;
+    right: 1rem;
 }
 
 /* Input Fields */
