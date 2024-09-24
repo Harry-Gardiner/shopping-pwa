@@ -52,7 +52,14 @@ function addItemToDOM(item, listId) {
   li.appendChild(button);
 
   const list = listId === 'item-list' ? itemList : gotList;
-  list.appendChild(li);
+
+  const items = Array.from(list.getElementsByTagName('li'));
+  const index = items.findIndex((li) => li.textContent.localeCompare(item) > 0);
+  if (index === -1) {
+    list.appendChild(li);
+  } else {
+    list.insertBefore(li, items[index]);
+  }
 }
 
 function createButton(classes) {
