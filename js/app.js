@@ -9,6 +9,7 @@ let isEditMode = false;
 
 function displayItems() {
   const itemsFromStorage = getItemsFromStorage();
+  itemsFromStorage.sort((a, b) => a.name.localeCompare(b.name));
   itemsFromStorage.forEach((item) => addItemToDOM(item.name, item.list));
   checkUI();
 }
