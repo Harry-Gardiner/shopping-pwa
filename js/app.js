@@ -135,19 +135,6 @@ function removeItemFromStorage(itemName) {
   localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
-function clearItems() {
-   if (confirm('Are you sure you want to clear all items?')) {
-    while (itemList.firstChild) {
-      itemList.removeChild(itemList.firstChild);
-    }
-    while (gotList.firstChild) {
-      gotList.removeChild(gotList.firstChild);
-    }
-    localStorage.removeItem('items');
-    checkUI();
-  }
-}
-
 function checkUI() {
   itemInput.value = '';
   const items = itemList.querySelectorAll('li');
@@ -174,7 +161,6 @@ function init() {
   itemForm.addEventListener('submit', onAddItemSubmit);
   itemList.addEventListener('click', onClickItem);
   gotList.addEventListener('click', onClickItem);
-  clearBtn.addEventListener('click', clearItems);
   resetBtn.addEventListener('click', resetList);
   document.addEventListener('DOMContentLoaded', displayItems);
   checkUI();
