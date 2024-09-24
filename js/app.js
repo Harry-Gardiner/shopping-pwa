@@ -148,7 +148,7 @@ function checkUI() {
 }
 
 function resetList() {
-  if(confirm('Are you sure you want to reset the list?')) {
+  if(confirm('Reseting the list will move all items to the top list. Are you sure?')) {
     const items = gotList.querySelectorAll('li');
     items.forEach((item) => {
       itemList.appendChild(item);
