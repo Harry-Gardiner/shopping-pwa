@@ -106,13 +106,23 @@ function onClickItem(e) {
 }
 
 function setItemToGot(item) {
-  gotList.appendChild(item);
+  insertItemInOrder(item, gotList);
   updateItemInStorage(item.textContent, 'got-list');
 }
 
 function setItemToNotGot(item) {
-  itemList.appendChild(item);
+  insertItemInOrder(item, itemList);
   updateItemInStorage(item.textContent, 'item-list');
+}
+
+function insertItemInOrder(item, list) {
+  const items = Array.from(list.getElementsByTagName('li'));
+  const index = items.findIndex((li) => li.textContent.localeCompare(item.textContent) > 0);
+  if (index === -1) {
+    list.appendChild(item);
+  } else {
+    list.insertBefore(item, items[index]);
+  }
 }
 
 function updateItemInStorage(itemName, listId) {
