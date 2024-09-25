@@ -12,7 +12,16 @@
   <div class="container">
     <header>
       <h1>Shopping List</h1>
+      <div class="files">
+        <i id="export" class="fa-solid fa-file-export export"></i>
+        <i id="import" class="fa-solid fa-file-import import"></i>
+      </div>
     </header>
+    <div class="file-import">
+      <input type="file" id="fileInput" accept=".json" />
+      <!-- x to close the file import -->
+      <i id="close" class="fa-solid fa-xmark close"></i>
+    </div>
     <form id="item-form">
       <div class="form-control">
         <input
@@ -38,7 +47,6 @@
     <footer>
       <div class="macro-buttons">
         <button id="reset" class="btn-reset">Reset list</button>
-        <button id="clear" class="btn-clear">Clear All</button>
       </div>
       <img class="logo" src="./img/icon.png" aria-hidden="true">
     </footer>

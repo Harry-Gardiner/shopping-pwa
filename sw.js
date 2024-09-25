@@ -1,6 +1,6 @@
 var GHPATH = '/shopping-pwa';
 var APP_PREFIX = 'shp_';
-var VERSION = 'version_004.5';
+var VERSION = 'version_5';
 var URLS = [    
   `${GHPATH}/`,
   `${GHPATH}/index.html`,

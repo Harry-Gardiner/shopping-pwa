@@ -6,9 +6,13 @@ const resetBtn = document.getElementById('reset');
 const clearBtn = document.getElementById('clear');
 const formBtn = itemForm.querySelector('button');
 let isEditMode = false;
+const exportBtn = document.getElementById('export');
+const importBtn = document.getElementById('import');
+const closeFileInput = document.getElementById('close');
 
 function displayItems() {
   const itemsFromStorage = getItemsFromStorage();
+  itemsFromStorage.sort((a, b) => a.name.localeCompare(b.name));
   itemsFromStorage.forEach((item) => addItemToDOM(item.name, item.list));
   checkUI();
 }
@@ -51,7 +55,14 @@ function addItemToDOM(item, listId) {
   li.appendChild(button);
 
   const list = listId === 'item-list' ? itemList : gotList;
-  list.appendChild(li);
+
+  const items = Array.from(list.getElementsByTagName('li'));
+  const index = items.findIndex((li) => li.textContent.localeCompare(item) > 0);
+  if (index === -1) {
+    list.appendChild(li);
+  } else {
+    list.insertBefore(li, items[index]);
+  }
 }
 
 function createButton(classes) {
@@ -98,13 +109,23 @@ function onClickItem(e) {
 }
 
 function setItemToGot(item) {
-  gotList.appendChild(item);
+  insertItemInOrder(item, gotList);
   updateItemInStorage(item.textContent, 'got-list');
 }
 
 function setItemToNotGot(item) {
-  itemList.appendChild(item);
+  insertItemInOrder(item, itemList);
   updateItemInStorage(item.textContent, 'item-list');
+}
+
+function insertItemInOrder(item, list) {
+  const items = Array.from(list.getElementsByTagName('li'));
+  const index = items.findIndex((li) => li.textContent.localeCompare(item.textContent) > 0);
+  if (index === -1) {
+    list.appendChild(item);
+  } else {
+    list.insertBefore(item, items[index]);
+  }
 }
 
 function updateItemInStorage(itemName, listId) {
@@ -135,33 +156,15 @@ function removeItemFromStorage(itemName) {
   localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
-function clearItems() {
-   if (confirm('Are you sure you want to clear all items?')) {
-    while (itemList.firstChild) {
-      itemList.removeChild(itemList.firstChild);
-    }
-    while (gotList.firstChild) {
-      gotList.removeChild(gotList.firstChild);
-    }
-    localStorage.removeItem('items');
-    checkUI();
-  }
-}
-
 function checkUI() {
   itemInput.value = '';
   const items = itemList.querySelectorAll('li');
-  if (items.length === 0) {
-    clearBtn.style.display = 'none';
-  } else {
-    clearBtn.style.display = 'block';
-  }
   formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
   isEditMode = false;
 }
 
 function resetList() {
-  if(confirm('Are you sure you want to reset the list?')) {
+  if(confirm('Reseting the list will move all items to the top list. Are you sure?')) {
     const items = gotList.querySelectorAll('li');
     items.forEach((item) => {
       itemList.appendChild(item);
@@ -170,12 +173,86 @@ function resetList() {
   }
 }
 
+function exportShoppingList() {
+  // Get the shopping list from localStorage
+  const shoppingList = localStorage.getItem('items');
+
+  // Convert it to a Blob (a file-like object)
+  const blob = new Blob([shoppingList], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  // Create a temporary anchor element to download the file
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'shopping-list.json'; // Name of the file to be saved
+  document.body.appendChild(a);
+  a.click();
+
+  // Clean up by removing the anchor and revoking the object URL
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function toggleFileImport() {
+  document.querySelector('.file-import').classList.toggle('active');
+}
+
+function closeFileImport() {
+  document.querySelector('.file-import').classList.remove('active');
+}
+function importShoppingList(event) {
+  const file = event.target.files[0];
+  
+  if (!file) {
+      alert("No file selected");
+      return;
+  }
+
+  // Create a FileReader to read the selected file
+  const reader = new FileReader();
+  
+  reader.onload = function(e) {
+      try {
+          // Parse the JSON from the file content
+          const importedShoppingList = JSON.parse(e.target.result);
+
+          // Validate the structure of the imported shopping list
+          if (!Array.isArray(importedShoppingList) || !importedShoppingList.every(item => item.name && item.list)) {
+              throw new Error("Invalid JSON structure");
+          }
+          
+          // Save the imported list to localStorage
+          localStorage.setItem('items', JSON.stringify(importedShoppingList));
+
+          // Populate the UI with the imported list
+          itemList.innerHTML = '';
+          gotList.innerHTML = '';
+          displayItems();
+          toggleFileImport();
+
+          alert("Shopping list imported successfully!");
+      } catch (error) {
+          console.error("Error parsing the JSON file:", error);
+          alert("Error parsing the JSON file. Please ensure it is correctly formatted.");
+      }
+  };
+  
+  // Read the file as a text string
+  reader.readAsText(file);
+}
+
+// Add an event listener to the file input
+document.getElementById('fileInput').addEventListener('change', importShoppingList);
+
+
 function init() {
   itemForm.addEventListener('submit', onAddItemSubmit);
   itemList.addEventListener('click', onClickItem);
   gotList.addEventListener('click', onClickItem);
-  clearBtn.addEventListener('click', clearItems);
   resetBtn.addEventListener('click', resetList);
+  exportBtn.addEventListener('click', exportShoppingList);
+  importBtn.addEventListener('click', toggleFileImport);
+  closeFileInput.addEventListener('click', closeFileImport);
   document.addEventListener('DOMContentLoaded', displayItems);
   checkUI();
 }

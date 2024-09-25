@@ -12,6 +12,65 @@ body {
     padding-bottom: 20vh;
 }
 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    h1 {
+        margin-bottom: 0;
+    }
+
+    .files {
+        display: flex;
+        gap: 1rem;
+    }
+}
+
+.file-import {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    z-index: 1000; /* Ensure it is above other elements */
+    justify-content: center;
+    align-items: center;
+
+    i {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        color: var(--primary-color);
+        padding: 0.5rem;
+        font-size: 25px;
+
+        &:hover {
+           cursor: pointer;
+        }
+    }
+}
+
+.file-import.active {
+    display: flex; /* Show the modal when active */
+}
+
+.file-import .modal-content {
+    background-color: var(--background-color);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.file-import input[type="file"] {
+    margin-top: 1rem;
+    color: var(--primary-color);
+}
+
 footer {
     background-color: var(--background-color);
     position: fixed;
@@ -22,6 +81,7 @@ footer {
 
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -116,4 +176,8 @@ ul li, ol li {
 
 .margin-large {
     margin: 24px 0;
+}
+
+.export, .import {
+    color: var(--primary-color);
 }
