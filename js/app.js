@@ -6,6 +6,8 @@ const resetBtn = document.getElementById('reset');
 const clearBtn = document.getElementById('clear');
 const formBtn = itemForm.querySelector('button');
 let isEditMode = false;
+const exportBtn = document.getElementById('export');
+const importBtn = document.getElementById('import');
 
 function displayItems() {
   const itemsFromStorage = getItemsFromStorage();
@@ -175,11 +177,33 @@ function resetList() {
   }
 }
 
+function exportShoppingList() {
+  // Get the shopping list from localStorage
+  const shoppingList = localStorage.getItem('items');
+
+  // Convert it to a Blob (a file-like object)
+  const blob = new Blob([shoppingList], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  // Create a temporary anchor element to download the file
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'shopping-list.json'; // Name of the file to be saved
+  document.body.appendChild(a);
+  a.click();
+
+  // Clean up by removing the anchor and revoking the object URL
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+
 function init() {
   itemForm.addEventListener('submit', onAddItemSubmit);
   itemList.addEventListener('click', onClickItem);
   gotList.addEventListener('click', onClickItem);
   resetBtn.addEventListener('click', resetList);
+  exportBtn.addEventListener('click', exportShoppingList);
   document.addEventListener('DOMContentLoaded', displayItems);
   checkUI();
 }

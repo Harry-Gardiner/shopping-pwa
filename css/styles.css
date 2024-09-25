@@ -12,6 +12,22 @@ body {
     padding-bottom: 20vh;
 }
 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    h1 {
+        margin-bottom: 0;
+    }
+
+    .files {
+        display: flex;
+        gap: 1rem;
+    }
+}
+
 footer {
     background-color: var(--background-color);
     position: fixed;
@@ -117,4 +133,8 @@ ul li, ol li {
 
 .margin-large {
     margin: 24px 0;
+}
+
+.export, .import {
+    color: var(--primary-color);
 }
