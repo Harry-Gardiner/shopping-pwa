@@ -8,6 +8,7 @@ const formBtn = itemForm.querySelector('button');
 let isEditMode = false;
 const exportBtn = document.getElementById('export');
 const importBtn = document.getElementById('import');
+const closeFileInput = document.getElementById('close');
 
 function displayItems() {
   const itemsFromStorage = getItemsFromStorage();
@@ -158,11 +159,6 @@ function removeItemFromStorage(itemName) {
 function checkUI() {
   itemInput.value = '';
   const items = itemList.querySelectorAll('li');
-  if (items.length === 0) {
-    clearBtn.style.display = 'none';
-  } else {
-    clearBtn.style.display = 'block';
-  }
   formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
   isEditMode = false;
 }
@@ -197,6 +193,57 @@ function exportShoppingList() {
   URL.revokeObjectURL(url);
 }
 
+function toggleFileImport() {
+  document.querySelector('.file-import').classList.toggle('active');
+}
+
+function closeFileImport() {
+  document.querySelector('.file-import').classList.remove('active');
+}
+function importShoppingList(event) {
+  const file = event.target.files[0];
+  
+  if (!file) {
+      alert("No file selected");
+      return;
+  }
+
+  // Create a FileReader to read the selected file
+  const reader = new FileReader();
+  
+  reader.onload = function(e) {
+      try {
+          // Parse the JSON from the file content
+          const importedShoppingList = JSON.parse(e.target.result);
+
+          // Validate the structure of the imported shopping list
+          if (!Array.isArray(importedShoppingList) || !importedShoppingList.every(item => item.name && item.list)) {
+              throw new Error("Invalid JSON structure");
+          }
+          
+          // Save the imported list to localStorage
+          localStorage.setItem('items', JSON.stringify(importedShoppingList));
+
+          // Populate the UI with the imported list
+          itemList.innerHTML = '';
+          gotList.innerHTML = '';
+          displayItems();
+          toggleFileImport();
+
+          alert("Shopping list imported successfully!");
+      } catch (error) {
+          console.error("Error parsing the JSON file:", error);
+          alert("Error parsing the JSON file. Please ensure it is correctly formatted.");
+      }
+  };
+  
+  // Read the file as a text string
+  reader.readAsText(file);
+}
+
+// Add an event listener to the file input
+document.getElementById('fileInput').addEventListener('change', importShoppingList);
+
 
 function init() {
   itemForm.addEventListener('submit', onAddItemSubmit);
@@ -204,6 +251,8 @@ function init() {
   gotList.addEventListener('click', onClickItem);
   resetBtn.addEventListener('click', resetList);
   exportBtn.addEventListener('click', exportShoppingList);
+  importBtn.addEventListener('click', toggleFileImport);
+  closeFileInput.addEventListener('click', closeFileImport);
   document.addEventListener('DOMContentLoaded', displayItems);
   checkUI();
 }
