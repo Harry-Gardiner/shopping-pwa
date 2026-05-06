@@ -1,0 +1,6 @@
+name = "shopping-voice-parser"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Deploy:  wrangler deploy
+# Secrets: wrangler secret put OPENAI_API_KEY

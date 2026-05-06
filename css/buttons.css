@@ -49,3 +49,38 @@ button:hover {
     flex-direction: column;
     gap: 1rem;
 }
+
+/* Voice button */
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.form-actions .btn {
+  flex: 1;
+}
+
+.btn-voice {
+  flex: 0 0 auto;
+  width: 48px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-voice.recording {
+  background-color: #e74c3c;
+  animation: voice-pulse 1.2s ease-in-out infinite;
+}
+
+.btn-voice:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes voice-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
