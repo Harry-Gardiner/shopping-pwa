@@ -225,6 +225,11 @@ function onAddItemSubmit(e) {
         (el) => (el.dataset.name || '').toLowerCase() === newItem.toLowerCase()
       );
       if (li) setItemToNotGot(li);
+    } else {
+      const li = Array.from(itemList.querySelectorAll('li')).find(
+        (el) => (el.dataset.name || '').toLowerCase() === newItem.toLowerCase()
+      );
+      if (li) updateQty(li, 1);
     }
     itemInput.value = '';
     filterItems('');
@@ -469,6 +474,11 @@ function addMealToList(planId) {
           (el) => (el.dataset.name || '').toLowerCase() === itemName.toLowerCase()
         );
         if (li) setItemToNotGot(li);
+      } else {
+        const li = Array.from(itemList.querySelectorAll('li')).find(
+          (el) => (el.dataset.name || '').toLowerCase() === itemName.toLowerCase()
+        );
+        if (li) updateQty(li, 1);
       }
     } else {
       addItemToDOM(itemName, 'item-list');
