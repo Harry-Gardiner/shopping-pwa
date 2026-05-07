@@ -1,11 +1,9 @@
 (function () {
-  // Replace after `wrangler deploy` — copy the URL it prints
-  const WORKER_URL = 'https://hjshopping.workers.dev';
+  const WORKER_URL = 'https://shopping-voice-parser.hjshopping.workers.dev';
 
   const voiceBtn = document.getElementById('voice-btn');
   if (!voiceBtn) return;
 
-  // Hide button if browser lacks mic/recording support
   if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
     voiceBtn.hidden = true;
     return;
@@ -92,9 +90,10 @@
 
       checkUI();
 
-      if (added === 0) alert('No new items found in recording.');
+      if (added === 0) showToast('No new items found in recording.', 'info');
+      else showToast(`Added ${added} item${added !== 1 ? 's' : ''}`);
     } catch (err) {
-      alert(`Voice input failed: ${err.message}`);
+      showToast(`Voice input failed: ${err.message}`, 'error');
     } finally {
       setButtonState('idle');
     }
@@ -107,7 +106,7 @@
       try {
         await startRecording();
       } catch {
-        alert('Microphone access denied.');
+        showToast('Microphone access denied.', 'error');
       }
     }
   });

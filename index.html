@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shopping App</title>
+  <title>Shopping List</title>
   <link rel="canonical" href="https://harry-gardiner.github.io/shopping-pwa/" />
   <link rel="manifest" href="/shopping-pwa/manifest.webmanifest">
   <link rel="stylesheet" href="css/styles.css">
@@ -12,16 +12,29 @@
   <div class="container">
     <header>
       <h1>Shopping List</h1>
-      <div class="files">
-        <i id="export" class="fa-solid fa-file-export export"></i>
-        <i id="import" class="fa-solid fa-file-import import"></i>
+      <div class="header-actions">
+        <button class="btn-icon" id="share-btn" title="Copy list" aria-label="Copy list to clipboard">
+          <i class="fa-solid fa-copy"></i>
+        </button>
+        <button class="btn-icon" id="export" title="Export list" aria-label="Export list">
+          <i class="fa-solid fa-file-export"></i>
+        </button>
+        <button class="btn-icon" id="import" title="Import list" aria-label="Import list">
+          <i class="fa-solid fa-file-import"></i>
+        </button>
       </div>
     </header>
-    <div class="file-import">
-      <input type="file" id="fileInput" accept=".json" />
-      <!-- x to close the file import -->
-      <i id="close" class="fa-solid fa-xmark close"></i>
+
+    <div class="overlay file-import" id="file-import-overlay">
+      <div class="overlay-content">
+        <p>Select a JSON file to import</p>
+        <input type="file" id="fileInput" accept=".json" />
+        <button class="btn-icon close-overlay" id="close" aria-label="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
     </div>
+
     <form id="item-form">
       <div class="form-control">
         <input
@@ -29,39 +42,75 @@
           class="form-input"
           id="item-input"
           name="item"
-          placeholder="Enter Item"
+          placeholder="Add item..."
+          autocomplete="off"
         />
       </div>
       <div class="form-control form-actions">
         <button type="submit" class="btn">
-          <i class="fa-solid fa-plus"></i> Add Item
+          <i class="fa-solid fa-plus"></i> Add
         </button>
         <button type="button" id="voice-btn" class="btn btn-voice" aria-label="Add items by voice">
           <i class="fa-solid fa-microphone"></i>
         </button>
       </div>
     </form>
-    <!-- For animation ideas see here 
-    https://gsap.com/community/forums/topic/18300-move-an-element-from-one-div-to-another/ 
-    -->
+
     <ul id="item-list" class="items"></ul>
-    <hr>
-    <ul id="got-list" class="items got-items"></ul>
-    <footer>
-      <div class="macro-buttons">
-        <button id="reset" class="btn-reset">Reset list</button>
-      </div>
-      <img class="logo" src="./img/icon.png" aria-hidden="true">
-    </footer>
+
+    <div id="got-section" class="got-section">
+      <p class="section-label">Already got</p>
+      <ul id="got-list" class="items got-items"></ul>
+    </div>
   </div>
 
+  <!-- Meal Plan Panel -->
+  <div class="panel-overlay" id="meal-plan-panel">
+    <div class="panel">
+      <div class="panel-handle"></div>
+      <div class="panel-header">
+        <h2>Meal Plans</h2>
+        <button class="btn-icon" id="close-meal-plans" aria-label="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div id="meal-plan-list" class="meal-plan-list"></div>
+      <button class="btn btn-full" id="new-meal-plan-btn">
+        <i class="fa-solid fa-plus"></i> New Meal Plan
+      </button>
+      <div class="new-meal-form" id="new-meal-form">
+        <input type="text" id="meal-name-input" placeholder="Meal name (e.g. Pasta Night)" autocomplete="off">
+        <div id="meal-items-list" class="new-meal-items"></div>
+        <div class="meal-item-row">
+          <input type="text" id="meal-item-input" placeholder="Add ingredient..." autocomplete="off">
+          <button type="button" id="add-meal-item-btn" class="btn btn-sq">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+        <div class="meal-form-actions">
+          <button type="button" id="save-meal-btn" class="btn">Save Meal Plan</button>
+          <button type="button" id="cancel-meal-btn" class="btn btn-secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-actions">
+      <button id="reset" class="btn btn-secondary">Reset</button>
+      <button id="meal-plans-btn" class="btn">
+        <i class="fa-solid fa-utensils"></i> Meal Plans
+      </button>
+    </div>
+    <img class="logo" src="./img/icon.png" aria-hidden="true">
+  </footer>
+
+  <div id="toast-container" aria-live="polite"></div>
+
   <script>
-      if (navigator.serviceWorker) {
-        navigator.serviceWorker.register (
-          '/shopping-pwa/sw.js',
-          {scope: '/shopping-pwa/'}
-        )
-      }
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.register('/shopping-pwa/sw.js', { scope: '/shopping-pwa/' });
+    }
   </script>
   <script src="js/app.js"></script>
   <script src="js/voice.js"></script>

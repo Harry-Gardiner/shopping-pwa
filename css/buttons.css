@@ -4,53 +4,96 @@ button {
   color: var(--background-color);
   background-color: var(--primary-color);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &.remove-item {
-    padding: 0.5rem;
-    width: 0.5rem;
-    height: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-
-    i {
-      font-size: 12px;
-    }
-  }
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-button:hover {
-  background-color: var(--button-hover-color);
+button:hover:not(:disabled) {
+  background-color: var(--primary-hover);
 }
 
-/* Button Shape and Shadow */
-.button-rounded {
-  border-radius: 8px;
-  padding: 12px 24px;
-  background-color: var(--primary-color);
-  color: var(--background-color);
-  border: none;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+button:active {
+  transform: scale(0.97);
 }
 
-.button-rounded:hover {
-  background-color: var(--button-hover-color);
-  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+.btn-secondary {
+  background-color: transparent;
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-color);
 }
 
-.macro-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.btn-secondary:hover {
+  background-color: var(--border-color);
+  color: var(--text-color);
 }
 
-/* Voice button */
+.btn-danger {
+  background-color: transparent;
+  color: var(--danger-color);
+  border: 1.5px solid currentColor;
+  padding: 6px 10px;
+}
+
+.btn-danger:hover {
+  background-color: var(--danger-color);
+  color: #fff;
+  border-color: var(--danger-color);
+}
+
+.btn-sm {
+  font-size: 14px;
+  padding: 6px 10px;
+}
+
+.btn-sq {
+  padding: 10px;
+  width: 42px;
+  flex-shrink: 0;
+  justify-content: center;
+}
+
+.btn-full {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Icon-only button */
+.btn-icon {
+  background: none;
+  color: var(--text-muted);
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  font-size: 18px;
+}
+
+.btn-icon:hover {
+  background-color: var(--border-color);
+  color: var(--text-color);
+}
+
+/* Remove item button (X on each list item) */
+button.remove-item {
+  background: none;
+  color: #ccc;
+  padding: 6px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  justify-content: center;
+  font-size: 14px;
+}
+
+button.remove-item:hover {
+  background-color: #fee;
+  color: var(--danger-color);
+}
+
+/* Form actions row */
 .form-actions {
   display: flex;
   gap: 0.5rem;
@@ -59,14 +102,14 @@ button:hover {
 
 .form-actions .btn {
   flex: 1;
+  justify-content: center;
 }
 
+/* Voice button */
 .btn-voice {
   flex: 0 0 auto;
   width: 48px;
   padding: 10px;
-  display: flex;
-  align-items: center;
   justify-content: center;
 }
 
@@ -83,4 +126,11 @@ button:hover {
 @keyframes voice-pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
+}
+
+/* Footer buttons */
+.footer-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
 }

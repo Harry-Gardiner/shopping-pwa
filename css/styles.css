@@ -5,179 +5,494 @@
 body {
     font-family: 'Roboto', sans-serif;
     color: var(--text-color);
-    background-color: var(--background-color);
+    background-color: #f7f7f5;
     margin: 0;
     padding: 0;
     min-height: 100dvh;
-    padding-bottom: 20vh;
+    padding-bottom: 90px;
 }
+
+/* ── Typography ────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0 0 12px 0;
+    color: var(--primary-color);
+}
+
+h1 { font-size: 28px; }
+h2 { font-size: 22px; margin-bottom: 0; }
+
+p, li, input, button {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* ── Layout ────────────────────────────────────────────────────────────── */
+
+.container {
+    padding: 20px 16px;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+/* ── Header ────────────────────────────────────────────────────────────── */
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    margin-bottom: 20px;
 
-    h1 {
-        margin-bottom: 0;
-    }
+    h1 { margin-bottom: 0; }
 
-    .files {
+    .header-actions {
         display: flex;
-        gap: 1rem;
+        gap: 0.25rem;
     }
 }
 
-.file-import {
+/* ── File Import Overlay ───────────────────────────────────────────────── */
+
+.overlay {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
-    z-index: 1000; /* Ensure it is above other elements */
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 200;
     justify-content: center;
     align-items: center;
+}
 
-    i {
+.overlay.active {
+    display: flex;
+}
+
+.overlay-content {
+    background: var(--background-color);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    position: relative;
+    max-width: 320px;
+    width: 90%;
+    box-shadow: var(--shadow-md);
+
+    p { color: var(--text-muted); margin: 0; }
+
+    .close-overlay {
         position: absolute;
-        top: 2rem;
-        right: 2rem;
-        color: var(--primary-color);
-        padding: 0.5rem;
-        font-size: 25px;
-
-        &:hover {
-           cursor: pointer;
-        }
+        top: 0.75rem;
+        right: 0.75rem;
     }
 }
 
-.file-import.active {
-    display: flex; /* Show the modal when active */
-}
-
-.file-import .modal-content {
-    background-color: var(--background-color);
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.file-import input[type="file"] {
-    margin-top: 1rem;
+.overlay-content input[type="file"] {
     color: var(--primary-color);
 }
 
+/* ── Form ──────────────────────────────────────────────────────────────── */
+
+#item-form {
+    margin-bottom: 16px;
+}
+
+.form-control {
+    margin-bottom: 8px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px 14px;
+    box-sizing: border-box;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background-color: var(--background-color);
+    font-size: 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    color: var(--text-color);
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(249, 136, 102, 0.15);
+}
+
+input[type="text"]::placeholder {
+    color: var(--text-muted);
+}
+
+/* ── Item Lists ────────────────────────────────────────────────────────── */
+
+ul.items {
+    padding: 0;
+    list-style: none;
+    background: var(--background-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+ul.items:empty {
+    display: none;
+}
+
+ul.items li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(249, 136, 102, 0.35);
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple-expand 0.55s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes ripple-expand {
+    to {
+        transform: translate(-50%, -50%) scale(35);
+        opacity: 0;
+    }
+}
+
+ul.items li:last-child {
+    border-bottom: none;
+}
+
+ul.items li:hover {
+    background-color: #fafaf9;
+}
+
+ul.items li:active {
+    background-color: #f3f3f0;
+}
+
+ul.items.got-items li {
+    opacity: 0.45;
+}
+
+ul.items.got-items li span {
+    text-decoration: line-through;
+}
+
+/* ── Got Section ───────────────────────────────────────────────────────── */
+
+.got-section {
+    display: none;
+    margin-top: 24px;
+}
+
+.got-section.visible {
+    display: block;
+}
+
+.section-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin: 0 0 8px 4px;
+}
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+
 footer {
     background-color: var(--background-color);
+    border-top: 1px solid var(--border-color);
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 1rem;
-
+    padding: 12px 16px;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Open Sans', sans-serif;
-    margin: 0 0 16px 0;
-    color: var(--primary-color);
-}
-
-h1 {
-    font-size: 36px;
-}
-
-h2 {
-    font-size: 30px;
-}
-
-h3 {
-    font-size: 26px;
-}
-
-h4 {
-    font-size: 22px;
-}
-
-p, li, input, button {
-    font-family: 'Roboto', sans-serif;
-    font-size: 18px;
-    line-height: 1.5;
-}
-
-small {
-    font-size: 14px;
+    align-items: center;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .logo {
-    height: 15vh;
+    height: 40px;
+    opacity: 0.7;
 }
 
-/* Input Fields */
-input[type="text"], input[type="email"], input[type="password"], textarea {
+/* ── Meal Plan Panel ───────────────────────────────────────────────────── */
+
+.panel-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 100;
+    align-items: flex-end;
+}
+
+.panel-overlay.active {
+    display: flex;
+}
+
+.panel {
+    background: var(--background-color);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    padding: 12px 20px 32px;
     width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 2px solid var(--primary-color);
-    border-radius: 4px;
-    background-color: var(--background-color);
-    font-size: 16px;
+    max-height: 85vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
 }
 
-input[type="text"]::placeholder, input[type="email"]::placeholder, input[type="password"]::placeholder, textarea::placeholder {
-    color: #999;
+.panel-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--border-color);
+    border-radius: 2px;
+    margin: 0 auto 4px;
+    flex-shrink: 0;
 }
 
-/* Containers */
-.container {
-    padding: calc(15px + 1.5625vw);
-    margin: 0 auto;
-    max-width: 1200px;
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 16px 0;
+/* Meal plan list */
+.meal-plan-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-/* Lists */
-ul, ol {
-    padding-left: 0;
-
-    &.got-items {
-        li {
-            opacity: 0.5;
-        }
-    }
-}
-
-ul li, ol li {
+.meal-plan-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #f7f7f5;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+}
+
+.meal-plan-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.meal-plan-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-color);
+}
+
+.meal-plan-ingredients {
+    font-size: 13px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.meal-plan-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.empty-state {
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 14px;
     padding: 1rem 0;
+    margin: 0;
 }
 
-/* General Spacing */
-.padding-large {
-    padding: 24px;
+/* New meal form */
+.new-meal-form {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.margin-large {
-    margin: 24px 0;
+.new-meal-form.visible {
+    display: flex;
 }
 
-.export, .import {
+.new-meal-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.new-meal-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    background: #f7f7f5;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    gap: 8px;
+}
+
+.new-meal-item span {
+    flex: 1;
+    min-width: 0;
+}
+
+.meal-item-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.meal-item-row input {
+    flex: 1;
+}
+
+.meal-form-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.meal-form-actions .btn {
+    flex: 1;
+    justify-content: center;
+}
+
+/* ── Quantity Control ──────────────────────────────────────────────────── */
+
+.qty-control {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0 0 0 auto;
+    flex-shrink: 0;
+}
+
+
+.qty-btn {
+    background: none;
+    color: var(--text-muted);
+    border: 1.5px solid var(--border-color);
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    font-size: 15px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.qty-btn:hover:not(:disabled) {
+    background: var(--border-color);
+    color: var(--text-color);
+}
+
+.qty-btn:disabled {
+    opacity: 0.25;
+    cursor: default;
+}
+
+.qty-val {
+    min-width: 18px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+    line-height: 1;
+}
+
+/* ── Toast Notifications ───────────────────────────────────────────────── */
+
+#toast-container {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 300;
+    pointer-events: none;
+    width: max-content;
+    max-width: calc(100vw - 32px);
+}
+
+.toast {
+    background: #333;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    text-align: center;
+}
+
+.toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-success { background: #2d7a4f; }
+.toast-error   { background: var(--danger-color); }
+.toast-info    { background: var(--info-color); }
+
+.toast-undo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #222;
+    padding-right: 10px;
+}
+
+.toast-undo-btn {
+    background: none;
     color: var(--primary-color);
+    border: 1.5px solid var(--primary-color);
+    border-radius: var(--radius-sm);
+    padding: 3px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.toast-undo-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
 }

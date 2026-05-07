@@ -1,8 +1,18 @@
-/* Colors */
 :root {
     --primary-color: #F98866;
+    --primary-hover: #E87455;
     --secondary-color: #FFF2D7;
     --text-color: #333333;
+    --text-muted: #999;
     --background-color: #FFF;
-    --button-hover-color: #E87455;
+    --border-color: #eee;
+    --danger-color: #e74c3c;
+    --danger-hover: #c0392b;
+    --success-color: #2ecc71;
+    --info-color: #3498db;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
 }
