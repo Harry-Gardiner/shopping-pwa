@@ -6,12 +6,12 @@ const CORS_HEADERS = {
 
 const SYSTEM_PROMPT =
   'You are a specialized backend utility for a smart kitchen shopping list app. ' +
-  'Your sole job is to take raw speech transcripts and convert them into a structured JSON array. ' +
-  'Output ONLY valid JSON starting with [ and ending with ]. No markdown wrappers. ' +
+  'Your sole job is to take raw speech transcripts and convert them into structured JSON. ' +
+  'Output ONLY valid JSON in exactly this format: {"ingredients":[{"name":"string","quantity":number|null,"unit":"string"|null}]}. ' +
+  'No markdown wrappers. ' +
   'Standardize names, split compound items like "garlic and onions", and extract quantities/units. ' +
   'Correct phonetic typos (e.g. "worst extra sauce" -> "Worcestershire sauce"). ' +
-  'If no unit or quantity is specified, use null. ' +
-  'Format: [{"name":"string","quantity":number|null,"unit":"string"|null}]';
+  'If no unit or quantity is specified, use null.';
 
 export default {
   async fetch(request, env) {
@@ -92,10 +92,12 @@ async function parseIngredients(transcript, apiKey) {
     throw new Error(`GPT-4o returned invalid JSON: ${raw}`);
   }
 
-  // json_object mode wraps arrays — unwrap if needed
+  if (Array.isArray(parsed.ingredients)) return parsed.ingredients;
+  // fallbacks for unexpected shapes
   if (Array.isArray(parsed)) return parsed;
-  const key = Object.keys(parsed)[0];
-  if (Array.isArray(parsed[key])) return parsed[key];
+  const key = Object.keys(parsed).find((k) => Array.isArray(parsed[k]));
+  if (key) return parsed[key];
+  if (parsed.name !== undefined) return [parsed];
   throw new Error(`Unexpected GPT-4o response shape: ${raw}`);
 }
 
