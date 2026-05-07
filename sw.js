@@ -1,12 +1,16 @@
 var GHPATH = '/shopping-pwa';
 var APP_PREFIX = 'shp_';
-var VERSION = 'version_5';
-var URLS = [    
+var VERSION = 'version_6';
+var URLS = [
   `${GHPATH}/`,
   `${GHPATH}/index.html`,
   `${GHPATH}/css/styles.css`,
+  `${GHPATH}/css/buttons.css`,
+  `${GHPATH}/css/variables.css`,
+  `${GHPATH}/css/reset.css`,
   `${GHPATH}/img/icon.png`,
-  `${GHPATH}/js/app.js`
+  `${GHPATH}/js/app.js`,
+  `${GHPATH}/js/voice.js`
 ]
 
 var CACHE_NAME = APP_PREFIX + VERSION
