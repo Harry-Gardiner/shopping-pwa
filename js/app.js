@@ -551,6 +551,113 @@ function saveMealPlan() {
   showToast(`"${name}" saved`);
 }
 
+// ── Settings ───────────────────────────────────────────────────────────────
+
+const WORKER_URL = 'https://shopping-voice-parser.hjshopping.workers.dev';
+
+function openSettings() {
+  document.getElementById('settings-panel').classList.add('active');
+  requestVersion();
+}
+
+function closeSettings() {
+  document.getElementById('settings-panel').classList.remove('active');
+}
+
+function requestVersion() {
+  const versionEl = document.getElementById('settings-version');
+  if (!navigator.serviceWorker?.controller) {
+    versionEl.textContent = 'unavailable';
+    return;
+  }
+
+  const onMessage = (e) => {
+    if (e.data?.version) {
+      versionEl.textContent = e.data.version;
+      navigator.serviceWorker.removeEventListener('message', onMessage);
+    }
+  };
+  navigator.serviceWorker.addEventListener('message', onMessage);
+  navigator.serviceWorker.controller.postMessage({ type: 'GET_VERSION' });
+}
+
+async function checkForUpdate() {
+  const btn = document.getElementById('update-btn');
+  const reg = await navigator.serviceWorker?.getRegistration();
+  if (!reg) { showToast('Service worker unavailable', 'error'); return; }
+
+  btn.disabled = true;
+
+  const onControllerChange = () => location.reload();
+  navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
+
+  try {
+    await reg.update();
+
+    if (reg.waiting) {
+      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+      return;
+    }
+
+    if (reg.installing) {
+      reg.installing.addEventListener('statechange', () => {
+        if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+      });
+      return;
+    }
+
+    navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+    showToast('Already up to date', 'info');
+  } catch {
+    navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+    showToast('Update check failed', 'error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function importMealFromUrl() {
+  const input = document.getElementById('recipe-url-input');
+  const url = input.value.trim();
+  if (!url) { showToast('Paste a recipe URL', 'error'); return; }
+
+  const btn = document.getElementById('import-url-btn');
+  const icon = btn.querySelector('i');
+  btn.disabled = true;
+  icon.className = 'fa-solid fa-spinner fa-spin';
+
+  try {
+    const res = await fetch(`${WORKER_URL}/extract-recipe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url }),
+    });
+
+    if (!res.ok) {
+      const { error } = await res.json().catch(() => ({}));
+      throw new Error(error || `Server error ${res.status}`);
+    }
+
+    const { mealName, ingredients } = await res.json();
+    if (!mealName || !ingredients?.length) {
+      throw new Error('No ingredients found');
+    }
+
+    const plans = getMealPlans();
+    plans.push({ id: Date.now().toString(), name: mealName, items: [...ingredients] });
+    saveMealPlans(plans);
+    renderMealPlans();
+
+    input.value = '';
+    showToast(`"${mealName}" saved`);
+  } catch (err) {
+    showToast(`Import failed: ${err.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    icon.className = 'fa-solid fa-wand-magic-sparkles';
+  }
+}
+
 // legacy stub for voice.js compatibility
 function checkUI() {}
 
@@ -596,6 +703,15 @@ function init() {
 
   document.getElementById('meal-plan-panel').addEventListener('click', (e) => {
     if (e.target === document.getElementById('meal-plan-panel')) closeMealPlans();
+  });
+
+  document.getElementById('settings-btn').addEventListener('click', openSettings);
+  document.getElementById('close-settings').addEventListener('click', closeSettings);
+  document.getElementById('update-btn').addEventListener('click', checkForUpdate);
+  document.getElementById('import-url-btn').addEventListener('click', importMealFromUrl);
+
+  document.getElementById('settings-panel').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('settings-panel')) closeSettings();
   });
 
   displayItems();

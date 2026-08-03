@@ -384,6 +384,26 @@ footer {
     justify-content: center;
 }
 
+/* ── Settings Panel ────────────────────────────────────────────────────── */
+
+.settings-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.settings-row span:first-child {
+    color: var(--text-color);
+}
+
+.settings-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 4px 0;
+}
+
 /* ── Quantity Control ──────────────────────────────────────────────────── */
 
 .qty-control {

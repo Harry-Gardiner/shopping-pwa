@@ -1,6 +1,6 @@
 var GHPATH = '/shopping-pwa';
 var APP_PREFIX = 'shp_';
-var VERSION = 'version_7';
+var VERSION = 'version_8';
 var URLS = [
   `${GHPATH}/`,
   `${GHPATH}/index.html`,
@@ -51,6 +51,16 @@ self.addEventListener('activate', function (e) {
           return caches.delete(keyList[i])
         }
       }))
+    }).then(function () {
+      return self.clients.claim()
     })
   )
+})
+
+self.addEventListener('message', function (e) {
+  if (e.data && e.data.type === 'SKIP_WAITING') {
+    self.skipWaiting()
+  } else if (e.data && e.data.type === 'GET_VERSION') {
+    e.source.postMessage({ version: VERSION })
+  }
 })
